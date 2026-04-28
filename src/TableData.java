@@ -1,0 +1,35 @@
+public class TableData {
+    public static Table[] tables = {
+            new Table("BAR", 2, "BAR"),
+            new Table("1A", 1, "CLEAN"),
+            new Table("2A", 1, "CLEAN"),
+            new Table("3A", 1, "CLEAN"),
+            new Table("4A", 1, "CLEAN"),
+            new Table("5A", 1, "CLEAN"),
+            new Table("6A", 1, "CLEAN"),
+            new Table("1B", 1, "CLEAN"),
+            new Table("2B", 1, "CLEAN"),
+            new Table("3B", 1, "CLEAN"),
+            new Table("4B", 1, "CLEAN"),
+            new Table("5B", 1, "CLEAN"),
+            new Table("6B", 1, "CLEAN"),
+            new Table("5C", 2, "CLEAN"),
+            new Table("6C", 2, "CLEAN"),
+            new Table("5D", 2, "CLEAN"),
+            new Table("6D", 2, "CLEAN"),
+            new Table("1E", 3, "CLEAN"),
+            new Table("2E", 3, "CLEAN"),
+            new Table("3E", 3, "CLEAN"),
+            new Table("4E", 3, "CLEAN"),
+            new Table("5E", 3, "CLEAN"),
+            new Table("6E", 3, "CLEAN"),
+            new Table("1F", 3, "CLEAN"),
+            new Table("2F", 3, "CLEAN"),
+            new Table("3F", 3, "CLEAN"),
+            new Table("4F", 3, "CLEAN"),
+            new Table("5F", 3, "CLEAN"),
+            new Table("6G", 3, "CLEAN"),
+
+
+    };
+}
