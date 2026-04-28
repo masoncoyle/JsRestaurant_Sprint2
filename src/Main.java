@@ -1,10 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+
 public class Main {
     public static void main(String[] args) {
-        //Employee log ins
-
-
+        try {
+            EmployeeFileReader.addEmployees();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         JFrame screen = new JFrame("Restaurant Manager");
         screen.setSize(1280, 800);
