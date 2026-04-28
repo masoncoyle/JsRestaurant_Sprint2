@@ -14,15 +14,14 @@ public class Employee {
     /** Employee's last name*/
     String lastName;
 
-    /** Employee's work shift*/
-    String shift;
-
     /** Employee's username*/
     String username;
 
     /** Employee's password*/
     String password;
 
+    /** Employee's work shift*/
+    String shift;
     /**
      * Initializes a new employee object with the given ID, name, and shift.
      * @param employeeID Employee's ID
