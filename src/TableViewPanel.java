@@ -2,9 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class TableViewPanel extends JPanel {
+    private JLabel usernameText = new JLabel();
     TableViewPanel(CardLayout cardLayout, JPanel mainPanel){
+        Employee currentUser = EmployeeInitializer.currentUser;
+
         setBackground(ScreenColors.LIGHTBLUE);
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
@@ -37,13 +42,23 @@ public class TableViewPanel extends JPanel {
             }
         });
         topBar.add(homeButton);
-        topBar.add(Box.createHorizontalStrut(50));
+        topBar.add(Box.createHorizontalStrut(30));
 
-        JLabel usernameText = new JLabel("Logged in as [role] [username]");
+        //Dislays role and username
+        usernameText = new JLabel();
         usernameText.setForeground(Color.WHITE);
         usernameText.setFont(new Font("Calibri", Font.PLAIN, 14));
         usernameText.setAlignmentX(Component.CENTER_ALIGNMENT);
         topBar.add(usernameText);
+
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                if (EmployeeInitializer.currentUser != null){
+                    updateUsernameText();
+                }
+            }
+        });
 
         sidebar.add(topBar);
 
@@ -102,6 +117,7 @@ public class TableViewPanel extends JPanel {
         sidebar.add(clockInClockOut);
         sidebar.add(Box.createVerticalStrut(10));
 
+        //Logout Button
         RoundedButton logOutButton = new RoundedButton("Log Out", 250, 40, 10);
         logOutButton.setPreferredSize(new Dimension(250,40));
         logOutButton.setMaximumSize(new Dimension(250,40));
@@ -110,9 +126,21 @@ public class TableViewPanel extends JPanel {
         logOutButton.setFont(new Font("Calibri", Font.PLAIN,20));
         logOutButton.setBorder(BorderFactory.createEmptyBorder(10,0,0,0));
 
+        logOutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                EmployeeInitializer.currentUser = null;
+
+                cardLayout.show(mainPanel, "LOGIN");
+            }
+        });
+
         sidebar.add(logOutButton);
         sidebar.add(Box.createVerticalStrut(10));
 
         add(sidebar, BorderLayout.WEST);
+    }
+    public void updateUsernameText(){
+        usernameText.setText("Logged in as " + EmployeeInitializer.currentUser.getClass().getSimpleName() + " " + EmployeeInitializer.currentUser.firstName + " " + EmployeeInitializer.currentUser.lastName);
     }
 }

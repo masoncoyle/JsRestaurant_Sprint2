@@ -31,7 +31,7 @@ public class Employee {
      * @param password Employee's password
      * @param shift Employee's work shift
      */
-    Employee(int employeeID, String firstName, String lastName, String shift, String username, String password){
+    Employee(int employeeID, String firstName, String lastName, String username, String password, String shift){
         this.employeeID = employeeID;
         this.firstName = firstName;
         this.lastName = lastName;

@@ -1,8 +1,9 @@
 import java.util.*;
 import java.io.*;
 
-public class EmployeeFileReader {
+public class EmployeeInitializer {
     public static ArrayList<Employee> employees = new ArrayList<>();
+    public static Employee currentUser = null;
 
     public static void addEmployees() throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader("EmployeeData.csv"));

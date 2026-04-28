@@ -1,9 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class LoginPanel extends JPanel {
+    JTextField usernameField;
+    JPasswordField passwordField;
+    JLabel errorLabel;
     LoginPanel(CardLayout cardLayout, JPanel mainPanel){
         setBackground(ScreenColors.LIGHTBLUE);
         setLayout(new GridBagLayout());
@@ -40,7 +42,7 @@ public class LoginPanel extends JPanel {
         usernameLabel.setForeground(ScreenColors.BLUETEXT);
         loginBox.add(usernameLabel);
 
-        JTextField usernameField = new JTextField();
+        usernameField = new JTextField();
         usernameField.setMaximumSize(new Dimension(300, 40));
         usernameField.setFont(new Font("Calibri", Font.PLAIN, 24));
         usernameField.setBorder(BorderFactory.createEmptyBorder(10,5,5,5));
@@ -53,7 +55,7 @@ public class LoginPanel extends JPanel {
         passwordLabel.setFont(new Font("Calibri", Font.PLAIN, 18));
         loginBox.add(passwordLabel);
 
-        JPasswordField passwordField = new JPasswordField();
+        passwordField = new JPasswordField();
         passwordField.setMaximumSize(new Dimension(300, 40));
         passwordField.setFont(new Font("Calibri", Font.PLAIN, 24));
         passwordField.setBorder(BorderFactory.createEmptyBorder(10,5,5,5));
@@ -69,7 +71,7 @@ public class LoginPanel extends JPanel {
         loginButton.setBorder(BorderFactory.createEmptyBorder(10,5,5,5));
         loginBox.add(loginButton);
 
-        JLabel errorLabel = new JLabel("");
+        errorLabel = new JLabel("");
         errorLabel.setForeground(Color.RED);
         errorLabel.setAlignmentX(CENTER_ALIGNMENT);
         loginBox.add(errorLabel);
@@ -79,18 +81,34 @@ public class LoginPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String username = usernameField.getText();
                 String password = new String(passwordField.getPassword());
-
+                boolean matchFound = false;
                 //Check Credentials
-
                 //If correct
-                cardLayout.show(mainPanel, "TABLE_VIEW");
-
+                for (Employee employee : EmployeeInitializer.employees){
+                    if (employee.username.equals(username) && employee.password.equals(password)){
+                        EmployeeInitializer.currentUser = employee;
+                        cardLayout.show(mainPanel, "TABLE_VIEW");
+                        matchFound = true;
+                        break;
+                    }
+                }
                 //If incorrect
-                errorLabel.setText("Incorrect username or password.");
+                if (!matchFound) {
+                    errorLabel.setText("Incorrect username or password.");
+                }
             }
         });
-
-
         screenFrame.add(loginBox);
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                    clearLoginFields();
+            }
+        });
+    }
+    public void clearLoginFields(){
+        usernameField.setText("");
+        passwordField.setText("");
+        errorLabel.setText("");
     }
 }

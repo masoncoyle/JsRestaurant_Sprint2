@@ -5,10 +5,14 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) {
         try {
-            EmployeeFileReader.addEmployees();
+            EmployeeInitializer.addEmployees();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        // Temporary admin account (Username: admin, Password 1)
+        Waiter admin = new Waiter(0,"admin","1", "admin", "1", "", 0);
+        EmployeeInitializer.employees.add(admin);
 
         JFrame screen = new JFrame("Restaurant Manager");
         screen.setSize(1280, 800);
