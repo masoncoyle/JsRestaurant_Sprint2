@@ -21,7 +21,5 @@ public class Main {
         mainPanel.add(orderPanel, "ORDER");
         cardLayout.show(mainPanel, "LOGIN");
         screen.setVisible(true);
-
-
     }
 }

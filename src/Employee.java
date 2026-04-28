@@ -8,22 +8,38 @@ public class Employee {
     /** Employee's ID*/
     int employeeID;
 
-    /** Employee's name*/
-    String employeeName;
+    /** Employee's first name*/
+    String firstName;
+
+    /** Employee's last name*/
+    String lastName;
 
     /** Employee's work shift*/
     String shift;
 
+    /** Employee's username*/
+    String username;
+
+    /** Employee's password*/
+    String password;
+
     /**
      * Initializes a new employee object with the given ID, name, and shift.
      * @param employeeID Employee's ID
-     * @param employeeName Employee's name
+     * @param firstName Employee's first name
+     * @param lastName Employee's first name
+     * @param username Employee's username
+     * @param password Employee's password
      * @param shift Employee's work shift
      */
-    Employee(int employeeID, String employeeName, String shift){
+    Employee(int employeeID, String firstName, String lastName, String shift, String username, String password){
         this.employeeID = employeeID;
-        this.employeeName = employeeName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
         this.shift = shift;
+
     }
 
     /**

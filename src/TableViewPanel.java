@@ -20,6 +20,7 @@ public class TableViewPanel extends JPanel {
         topBar.setLayout(new BoxLayout(topBar, BoxLayout.X_AXIS));
         topBar.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Home Button
         JButton homeButton = new JButton("☰");
         homeButton.setOpaque(false);
         homeButton.setContentAreaFilled(false);
@@ -67,6 +68,7 @@ public class TableViewPanel extends JPanel {
         clockInClockOut.setLayout(new BoxLayout(clockInClockOut, BoxLayout.X_AXIS));
         clockInClockOut.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Clock in --- Needs changed to button
         clockInClockOut.add(Box.createHorizontalGlue());
         RoundedRectangle clockInBox = new RoundedRectangle(120, 40, 10);
         clockInBox.setPreferredSize(new Dimension(120, 40));
@@ -83,6 +85,7 @@ public class TableViewPanel extends JPanel {
 
         clockInClockOut.add(Box.createHorizontalStrut(10));
 
+        // Clock out --- Needs changed to button
         RoundedRectangle clockOutBox = new RoundedRectangle(120, 40, 10);
         clockOutBox.setPreferredSize(new Dimension(120, 40));
         clockOutBox.setMaximumSize(new Dimension(120, 40));
