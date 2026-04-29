@@ -12,6 +12,7 @@ public class TableViewPanel extends JPanel {
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private OrderPanel orderPanel;
+    private Table currentTable = null;
 
     TableViewPanel(CardLayout cardLayout, JPanel mainPanel, OrderPanel orderPanel){
         tableGridPanel = new TableGridPanel(this);
@@ -36,24 +37,24 @@ public class TableViewPanel extends JPanel {
         topBar.setLayout(new BoxLayout(topBar, BoxLayout.X_AXIS));
         topBar.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Home Button
-        JButton homeButton = new JButton("☰");
-        homeButton.setOpaque(false);
-        homeButton.setContentAreaFilled(false);
-        homeButton.setBorderPainted(false);
-        homeButton.setFocusPainted(false);
-        homeButton.setForeground(Color.WHITE);
-        homeButton.setFont(new Font("Dialog", Font.PLAIN, 30));
-        homeButton.setBackground(new Color(0,0,0,0));
-        homeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        homeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //Return to default home screen state / deselect table
-            }
-        });
-        topBar.add(homeButton);
-        topBar.add(Box.createHorizontalStrut(30));
+//        // Home Button
+//        JButton homeButton = new JButton("☰");
+//        homeButton.setOpaque(false);
+//        homeButton.setContentAreaFilled(false);
+//        homeButton.setBorderPainted(false);
+//        homeButton.setFocusPainted(false);
+//        homeButton.setForeground(Color.WHITE);
+//        homeButton.setFont(new Font("Dialog", Font.PLAIN, 30));
+//        homeButton.setBackground(new Color(0,0,0,0));
+//        homeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        homeButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                //Return to default home screen state / deselect table
+//            }
+//        });
+//        topBar.add(homeButton);
+//        topBar.add(Box.createHorizontalStrut(30));
 
         //Dislays role and username
         usernameText = new JLabel();
@@ -69,6 +70,16 @@ public class TableViewPanel extends JPanel {
                     updateUsernameText();
                 }
                 tableGridPanel.createTableGrid();
+                if (currentTable != null) {
+                    Order currentOrder = null;
+                    for (Order order : OrderData.activeOrders){
+                        if (order.getTableID().equals(currentTable.getTableID())) {
+                            currentOrder = order;
+                        }
+                    }
+                    updateSideBar(currentTable, currentOrder);
+                }
+                cardLayout.show(mainPanel, "TABLE_VIEW");
             }
         });
 
@@ -161,10 +172,12 @@ public class TableViewPanel extends JPanel {
 
     }
     public void updateUsernameText(){
-        usernameText.setText("Logged in as " + EmployeeInitializer.currentUser.getClass().getSimpleName() + " " + EmployeeInitializer.currentUser.firstName + " " + EmployeeInitializer.currentUser.lastName);
+        usernameText.setText("      Logged in as " + EmployeeInitializer.currentUser.getClass().getSimpleName() + " " + EmployeeInitializer.currentUser.firstName + " " + EmployeeInitializer.currentUser.lastName);
     }
     public void updateSideBar(Table table, Order order){
         dynamicDisplay.removeAll();
+
+        this.currentTable = table;
 
         JLabel tableIdLabel = new JLabel("Table " + table.getTableID());
         tableIdLabel.setForeground(ScreenColors.BLUETEXT);
@@ -209,12 +222,25 @@ public class TableViewPanel extends JPanel {
             dynamicDisplay.add(Box.createVerticalStrut(320));
             dynamicDisplay.add(markTableDirtyButton);
         } else if (order.getOrderStatus().equals("ACTIVE")) {
-            JLabel prepTimeLabel = new JLabel("Prep Time\n" + order.getPrepTime());
+            JLabel prepTimeLabel = new JLabel("Prep Time");
             prepTimeLabel.setForeground(ScreenColors.BLUETEXT);
             prepTimeLabel.setFont(new Font("Calibri", Font.PLAIN, 24));
             prepTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             dynamicDisplay.add(Box.createVerticalStrut(20));
             dynamicDisplay.add(prepTimeLabel);
+
+            RoundedRectangle prepTimeFrame = new RoundedRectangle(200,50,20);
+            prepTimeFrame.setMaximumSize(new Dimension(200,50));
+            prepTimeFrame.setPreferredSize(new Dimension(200,50));
+            prepTimeFrame.setLayout(new GridBagLayout());
+            prepTimeFrame.setBackground(ScreenColors.LIGHTBLUE);
+
+            JLabel prepTimeText = new JLabel(String.valueOf(order.getPrepTime()) + " minutes");
+            prepTimeText.setForeground(Color.BLACK);
+            prepTimeText.setFont(new Font("Calibri", Font.PLAIN, 24));
+            prepTimeFrame.add(prepTimeText);
+            dynamicDisplay.add(prepTimeFrame);
+
 
             RoundedButton markDeliveredButton = new RoundedButton("Order Delivered",200,40,10);
             markDeliveredButton.setBackground(ScreenColors.MEDBLUE);
@@ -226,8 +252,12 @@ public class TableViewPanel extends JPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     order.setOrderStatus("COMPLETE");
+                    updateSideBar(table,order);
                 }
+
             });
+            dynamicDisplay.add(Box.createVerticalStrut(40));
+            dynamicDisplay.add(markDeliveredButton);
 
         } else if (order.getOrderStatus().equals("COMPLETE")){
             RoundedButton takeOrderButton = new RoundedButton("Take Order",200,40,10);
@@ -253,12 +283,32 @@ public class TableViewPanel extends JPanel {
             takePaymentButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-
+                    OrderData.activeOrders.remove(order);
+                    resetDynamicDisplay();
+                    table.markDirty();
+                    tableGridPanel.createTableGrid();
+                }
+            });
+            dynamicDisplay.add(Box.createVerticalStrut(40));
+            dynamicDisplay.add(takePaymentButton);
+        } else if (order.getOrderStatus().equals("PAID")){
+            RoundedButton markTableDirtyButton = new RoundedButton("Mark Table as Dirty",200,40,10);
+            markTableDirtyButton.setBackground(ScreenColors.MEDBLUE);
+            markTableDirtyButton.setForeground(Color.WHITE);
+            markTableDirtyButton.setFont(new Font("Calibri", Font.PLAIN,20));
+            markTableDirtyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+            markTableDirtyButton.setMaximumSize(new Dimension(200,40));
+            markTableDirtyButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    table.markDirty();
+                    tableGridPanel.createTableGrid();
+                    resetDynamicDisplay();
                 }
             });
 
-
-
+            dynamicDisplay.add(Box.createVerticalStrut(320));
+            dynamicDisplay.add(markTableDirtyButton);
         }
         dynamicDisplay.revalidate();
         dynamicDisplay.repaint();

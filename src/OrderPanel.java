@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class OrderPanel extends JPanel {
   private CardLayout cardLayout;
@@ -54,23 +57,46 @@ public class OrderPanel extends JPanel {
       background.setLayout(null);
       add(background);
 
-      JLabel menuButton = new JLabel("=");
-      menuButton.setForeground(Color.WHITE);
-      menuButton.setFont(new Font(FONT, Font.PLAIN, 24));
-      menuButton.setBounds(20, 15, 50, 40);
-      background.add(menuButton);
+      RoundedButton closeButton = new RoundedButton("Close", 50,50,10);
+      closeButton.setPreferredSize(new Dimension(50,50));
+      closeButton.setMaximumSize(new Dimension(50,50));
+      closeButton.setFont(new Font("Calibri", Font.PLAIN, 26));
+      closeButton.setForeground(ScreenColors.BLUETEXT);
+      closeButton.setBackground(ScreenColors.LIGHTBLUE);
+      closeButton.setBorder(BorderFactory.createEmptyBorder(10,0,0,0));
+      closeButton.setBounds(40,15,100,40);
+      closeButton.addActionListener(new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+              if (currentOrder != null){
+                  OrderData.activeOrders.remove(currentOrder);
+                  currentOrder = null;
+              }
+              cardLayout.show(mainPanel, "TABLE_VIEW");
+          }
+      });
+      background.add(closeButton);
+
+      RoundedButton logOutButton = new RoundedButton("Log Out", 250, 40, 10);
+      logOutButton.setPreferredSize(new Dimension(250,40));
+      logOutButton.setMaximumSize(new Dimension(250,40));
+      logOutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+      logOutButton.setBackground(ScreenColors.LIGHTBLUE);
+      logOutButton.setFont(new Font("Calibri", Font.PLAIN,20));
+      logOutButton.setBorder(BorderFactory.createEmptyBorder(10,0,0,0));
 
       tableLabel = new JLabel("Table", SwingConstants.LEFT);
-      tableLabel.setForeground(Color.WHITE);
-      tableLabel.setBounds(100, 20, 150, 30);
-      tableLabel.setFont(new Font(FONT, Font.BOLD, 14));
-      tableLabel.setBounds(100, 20, 150, 30);
+      tableLabel.setForeground(ScreenColors.LIGHTBLUE);
+      tableLabel.setBounds(500, 20, 150, 40);
+      tableLabel.setFont(new Font(FONT, Font.BOLD, 32));
+      tableLabel.setBounds(500, 20, 150, 40);
       background.add(tableLabel);
+
 
       JLabel title = new JLabel("Order Food", SwingConstants.CENTER);
       title.setForeground(Color.WHITE);
       title.setFont(new Font(FONT, Font.BOLD, 44));
-      title.setBounds(380, 25, 400, 60);
+      title.setBounds(350, 50, 400, 60);
       background.add(title);
 
       categoryLabel = new JLabel("", SwingConstants.CENTER);
@@ -471,12 +497,16 @@ public class OrderPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "There are no items to submit.");
             return;
         }
-
-
+        // Simulate Cook Adding Prep Time
+        int[] prepTimeData = {5,10,15,20};
+        currentOrder.setPrepTime(prepTimeData[new Random().nextInt(4)]);
         OrderData.submitOrder(currentOrder);
 
         JOptionPane.showMessageDialog(this,
                 "Order submitted to kitchen queue.\nCheck the console to see the queue.");
+
+
+        cardLayout.show(mainPanel, "TABLE_VIEW");
 
         updateOrderDisplay();
     }

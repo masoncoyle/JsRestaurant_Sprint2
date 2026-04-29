@@ -117,7 +117,7 @@ public class OrderData {
     }
 
     public static void submitOrder(Order order){
-        order.updateStatus("SUBMITTED");
+        //order.updateStatus("SUBMITTED");
         orderQueue.add(order);
 
         System.out.println("Order sent to queue.");
