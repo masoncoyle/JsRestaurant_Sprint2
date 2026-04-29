@@ -4,7 +4,7 @@ Username: admin
 
 Password: 1
 
-
+///
 
 Employee Login Info
 
@@ -14,8 +14,7 @@ Name: Tara Hall, Username: thall1, Password: 643s4, Section 2
 
 Name: Evan Francis, Username: efrancis1, Password: 82t5w, Section 3
 
-
-
+///
 
 Section 1 is Columns A and B
 
