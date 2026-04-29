@@ -9,11 +9,11 @@ public class LoginPanel extends JPanel {
     LoginPanel(CardLayout cardLayout, JPanel mainPanel){
         setBackground(ScreenColors.LIGHTBLUE);
         setLayout(new GridBagLayout());
-        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        GridBagConstraints gbc = new GridBagConstraints();
         RoundedRectangle screenFrame = new RoundedRectangle(1220, 720, 50);
         screenFrame.setBackground(ScreenColors.MEDBLUE);
         screenFrame.setLayout(new BoxLayout(screenFrame, BoxLayout.Y_AXIS));
-        add(screenFrame, gridBagConstraints);
+        add(screenFrame, gbc);
 
         JLabel title = new JLabel("Restaurant Management System");
         title.setForeground(Color.WHITE);

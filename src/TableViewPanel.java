@@ -7,6 +7,7 @@ import java.awt.event.ComponentEvent;
 
 public class TableViewPanel extends JPanel {
     private JLabel usernameText = new JLabel();
+    private TableGridPanel tableGridPanel = new TableGridPanel();
     TableViewPanel(CardLayout cardLayout, JPanel mainPanel){
         Employee currentUser = EmployeeInitializer.currentUser;
 
@@ -57,6 +58,7 @@ public class TableViewPanel extends JPanel {
                 if (EmployeeInitializer.currentUser != null){
                     updateUsernameText();
                 }
+                tableGridPanel.createTableGrid();
             }
         });
 
@@ -137,8 +139,13 @@ public class TableViewPanel extends JPanel {
 
         sidebar.add(logOutButton);
         sidebar.add(Box.createVerticalStrut(10));
-
         add(sidebar, BorderLayout.WEST);
+
+        //Create Table Grid
+        TableGridPanel tableGrid = new TableGridPanel();
+        //add(tableGrid, BorderLayout.CENTER);
+        add(tableGridPanel, BorderLayout.CENTER);
+
     }
     public void updateUsernameText(){
         usernameText.setText("Logged in as " + EmployeeInitializer.currentUser.getClass().getSimpleName() + " " + EmployeeInitializer.currentUser.firstName + " " + EmployeeInitializer.currentUser.lastName);
