@@ -115,6 +115,10 @@ public class Order {
         return orderStatus;
     }
 
+    public void setOrderStatus(String status){
+        this.orderStatus = status;
+    }
+
     public double getOrderTotal(){
         orderTotal = calculateTotal();
         return orderTotal;
@@ -131,6 +135,7 @@ public class Order {
 
         return "";
     }
+
 
     public ArrayList<OrderItem> getOrderItems(){
         return orderItems;
