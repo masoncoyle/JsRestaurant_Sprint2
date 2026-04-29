@@ -1,13 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class TableGridPanel extends JPanel {
-    TableGridPanel(){
+    private TableViewPanel tableViewPanel;
+    TableGridPanel(TableViewPanel tableViewPanel){
+        this.tableViewPanel = tableViewPanel;
         setLayout(new GridBagLayout());
         setBackground(ScreenColors.LIGHTBLUE);
-
-
-
     }
     public void createTableGrid(){
         removeAll();
@@ -61,8 +62,22 @@ public class TableGridPanel extends JPanel {
                             tableButton.setBackground(Color.WHITE);
                         }
                     }
-                }
 
+                }
+                tableButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        Table connectedTable = (Table) tableButton.getClientProperty("table");
+                        Order currentOrder = null;
+                        for (Order order : OrderData.orderQueue){
+                            if (order.getTableID().equals(connectedTable.getTableID())){
+                                currentOrder = order;
+                                break;
+                            }
+                        }
+                        tableViewPanel.updateSideBar(connectedTable, currentOrder);
+                    }
+                });
                 add(tableButton, tableGbc);
             }
         }

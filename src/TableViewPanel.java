@@ -6,9 +6,17 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 public class TableViewPanel extends JPanel {
+    private TableGridPanel tableGridPanel;
     private JLabel usernameText = new JLabel();
-    private TableGridPanel tableGridPanel = new TableGridPanel();
+    private RoundedRectangle dynamicDisplay = new RoundedRectangle(250,300,20);
+    private CardLayout cardLayout;
+    private JPanel mainPanel;
+
     TableViewPanel(CardLayout cardLayout, JPanel mainPanel){
+        tableGridPanel = new TableGridPanel(this);
+        this.cardLayout = cardLayout;
+        this.mainPanel = mainPanel;
+
         Employee currentUser = EmployeeInitializer.currentUser;
 
         setBackground(ScreenColors.LIGHTBLUE);
@@ -66,16 +74,21 @@ public class TableViewPanel extends JPanel {
 
         sidebar.add(Box.createVerticalStrut(40));
 
-        RoundedRectangle selectTableBox = new RoundedRectangle(250, 50, 10);
-        selectTableBox.setAlignmentX(Component.CENTER_ALIGNMENT);
-        selectTableBox.setBackground(Color.WHITE);
-        selectTableBox.setMaximumSize(new Dimension(250,50));
-        selectTableBox.add(Box.createVerticalStrut(50));
+        dynamicDisplay.setBackground(Color.WHITE);
+        dynamicDisplay.setMaximumSize(new Dimension(250,500));
+        dynamicDisplay.setPreferredSize(new Dimension(250,500));
+        dynamicDisplay.setAlignmentX(Component.CENTER_ALIGNMENT);
+        dynamicDisplay.setLayout(new BoxLayout(dynamicDisplay, BoxLayout.Y_AXIS));
+        dynamicDisplay.setOpaque(false);
+        sidebar.add(dynamicDisplay);
+        dynamicDisplay.add(Box.createVerticalStrut(20));
+
         JLabel selectTableText = new JLabel("Select a Table");
         selectTableText.setForeground(ScreenColors.BLUETEXT);
         selectTableText.setFont(new Font("Calibri", Font.PLAIN, 24));
-        selectTableBox.add(selectTableText);
-        sidebar.add(selectTableBox);
+        selectTableText.setAlignmentX(Component.CENTER_ALIGNMENT);
+        dynamicDisplay.add(selectTableText);
+
 
         sidebar.add(Box.createVerticalGlue());
 
@@ -141,13 +154,122 @@ public class TableViewPanel extends JPanel {
         sidebar.add(Box.createVerticalStrut(10));
         add(sidebar, BorderLayout.WEST);
 
-        //Create Table Grid
-        TableGridPanel tableGrid = new TableGridPanel();
         //add(tableGrid, BorderLayout.CENTER);
         add(tableGridPanel, BorderLayout.CENTER);
 
     }
     public void updateUsernameText(){
         usernameText.setText("Logged in as " + EmployeeInitializer.currentUser.getClass().getSimpleName() + " " + EmployeeInitializer.currentUser.firstName + " " + EmployeeInitializer.currentUser.lastName);
+    }
+    public void updateSideBar(Table table, Order order){
+        dynamicDisplay.removeAll();
+
+        JLabel tableIdLabel = new JLabel("Table " + table.getTableID());
+        tableIdLabel.setForeground(ScreenColors.BLUETEXT);
+        tableIdLabel.setFont(new Font("Calibri", Font.PLAIN, 32));
+        tableIdLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        dynamicDisplay.add(Box.createVerticalStrut(20));
+        dynamicDisplay.add(tableIdLabel);
+
+        if (order == null){
+            RoundedButton takeOrderButton = new RoundedButton("Take Order",200,40,10);
+            takeOrderButton.setBackground(ScreenColors.MEDBLUE);
+            takeOrderButton.setForeground(Color.WHITE);
+            takeOrderButton.setFont(new Font("Calibri", Font.PLAIN,20));
+            takeOrderButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+            takeOrderButton.setMaximumSize(new Dimension(200,40));
+            takeOrderButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Need to send tableID to Order Screen
+                    cardLayout.show(mainPanel, "ORDER");
+                }
+            });
+
+            dynamicDisplay.add(Box.createVerticalStrut(10));
+            dynamicDisplay.add(takeOrderButton);
+
+            RoundedButton markTableDirtyButton = new RoundedButton("Mark Table as Dirty",200,40,10);
+            markTableDirtyButton.setBackground(ScreenColors.MEDBLUE);
+            markTableDirtyButton.setForeground(Color.WHITE);
+            markTableDirtyButton.setFont(new Font("Calibri", Font.PLAIN,20));
+            markTableDirtyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+            markTableDirtyButton.setMaximumSize(new Dimension(200,40));
+            markTableDirtyButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    table.markDirty();
+                    tableGridPanel.createTableGrid();
+                    resetDynamicDisplay();
+                }
+            });
+
+            dynamicDisplay.add(Box.createVerticalStrut(320));
+            dynamicDisplay.add(markTableDirtyButton);
+        } else if (order.getOrderStatus().equals("ACTIVE")) {
+            JLabel prepTimeLabel = new JLabel("Prep Time\n" + order.getPrepTime());
+            prepTimeLabel.setForeground(ScreenColors.BLUETEXT);
+            prepTimeLabel.setFont(new Font("Calibri", Font.PLAIN, 24));
+            prepTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            dynamicDisplay.add(Box.createVerticalStrut(20));
+            dynamicDisplay.add(prepTimeLabel);
+
+            RoundedButton markDeliveredButton = new RoundedButton("Order Delivered",200,40,10);
+            markDeliveredButton.setBackground(ScreenColors.MEDBLUE);
+            markDeliveredButton.setForeground(Color.WHITE);
+            markDeliveredButton.setFont(new Font("Calibri", Font.PLAIN,20));
+            markDeliveredButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+            markDeliveredButton.setMaximumSize(new Dimension(200,40));
+            markDeliveredButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    order.setOrderStatus("COMPLETE");
+                }
+            });
+
+        } else if (order.getOrderStatus().equals("COMPLETE")){
+            RoundedButton takeOrderButton = new RoundedButton("Take Order",200,40,10);
+            takeOrderButton.setBackground(ScreenColors.MEDBLUE);
+            takeOrderButton.setForeground(Color.WHITE);
+            takeOrderButton.setFont(new Font("Calibri", Font.PLAIN,20));
+            takeOrderButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+            takeOrderButton.setMaximumSize(new Dimension(200,40));
+            takeOrderButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Need to send tableID to Order Screen
+                    cardLayout.show(mainPanel, "ORDER");
+                }
+            });
+
+            RoundedButton takePaymentButton = new RoundedButton("Take Payment",200,40,10);
+            takePaymentButton.setBackground(ScreenColors.MEDBLUE);
+            takePaymentButton.setForeground(Color.WHITE);
+            takePaymentButton.setFont(new Font("Calibri", Font.PLAIN,20));
+            takePaymentButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+            takePaymentButton.setMaximumSize(new Dimension(200,40));
+            takePaymentButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                }
+            });
+
+
+
+        }
+        dynamicDisplay.revalidate();
+        dynamicDisplay.repaint();
+    }
+    public void resetDynamicDisplay(){
+        dynamicDisplay.removeAll();
+        JLabel selectTableText = new JLabel("Select a Table");
+        selectTableText.setForeground(ScreenColors.BLUETEXT);
+        selectTableText.setFont(new Font("Calibri", Font.PLAIN, 24));
+        selectTableText.setAlignmentX(Component.CENTER_ALIGNMENT);
+        dynamicDisplay.add(Box.createVerticalStrut(20));
+        dynamicDisplay.add(selectTableText);
+        dynamicDisplay.revalidate();
+        dynamicDisplay.repaint();
     }
 }
