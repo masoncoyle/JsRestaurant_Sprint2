@@ -169,11 +169,11 @@ public class OrderPanel extends JPanel {
       subtotalLabel.setBounds(25, 485, 160, 25);
       rightPanel.add(subtotalLabel);
 
-      estimatedTimeLabel = new JLabel("Estimated time: 0 min");
-      estimatedTimeLabel.setFont(new Font(FONT, Font.PLAIN, 14));
-      estimatedTimeLabel.setForeground(ScreenColors.BLUETEXT);
-      estimatedTimeLabel.setBounds(25, 515, 170, 25);
-      rightPanel.add(estimatedTimeLabel);
+//      estimatedTimeLabel = new JLabel("Estimated time: 0 min");
+//      estimatedTimeLabel.setFont(new Font(FONT, Font.PLAIN, 14));
+//      estimatedTimeLabel.setForeground(ScreenColors.BLUETEXT);
+//      estimatedTimeLabel.setBounds(25, 515, 170, 25);
+//      rightPanel.add(estimatedTimeLabel);
 
       RoundedButton submitButton = new RoundedButton("Submit Order", 160, 40, 10);
       submitButton.setBounds(25, 555, 160, 40);
@@ -349,7 +349,7 @@ public class OrderPanel extends JPanel {
         if (currentOrder == null) {
             totalItemsLabel.setText("Total items: 0");
             subtotalLabel.setText("Subtotal: $0.00");
-            estimatedTimeLabel.setText("Estimated time: 0 min");
+            //estimatedTimeLabel.setText("Estimated time: 0 min");
             orderListPanel.revalidate();
             orderListPanel.repaint();
             return;
@@ -402,7 +402,7 @@ public class OrderPanel extends JPanel {
 
         totalItemsLabel.setText("Total items: " + currentOrder.getTotalItems());
         subtotalLabel.setText("Subtotal: $" + String.format("%.2f", currentOrder.getOrderTotal()));
-        estimatedTimeLabel.setText("Estimated time: " + currentOrder.calculatePrepTime() + " min");
+        //estimatedTimeLabel.setText("Estimated time: " + currentOrder.calculatePrepTime() + " min");
 
         orderListPanel.revalidate();
         orderListPanel.repaint();
@@ -479,13 +479,11 @@ public class OrderPanel extends JPanel {
             return;
         }
 
-        int estimatedTime = currentOrder.calculatePrepTime();
 
         OrderData.submitOrder(currentOrder);
 
         JOptionPane.showMessageDialog(this,
-                "Order submitted to kitchen queue.\nEstimated time: "
-                        + estimatedTime + " minutes.\nCheck the console to see the queue.");
+                "Order submitted to kitchen queue.\nCheck the console to see the queue.");
 
         updateOrderDisplay();
     }
