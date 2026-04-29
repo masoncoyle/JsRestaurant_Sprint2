@@ -1,14 +1,23 @@
 public class Order {
     private int orderID;
+    public static int nextID = 1;
     private String tableID;
     private int prepTime;
     private String orderStatus;
     private double orderTotal;
 
+    public Order(String tableID, int prepTime, String orderStatus, double orderTotal){
+        this.orderID = nextID;
+        nextID++;
+        this.tableID = tableID;
+        this.prepTime = prepTime;
+        this.orderStatus = orderStatus;
+        this.orderTotal = orderTotal;
+    }
+
     public int getOrderID(){
         return orderID;
     }
-
     public String getTableID(){
         return tableID;
     }

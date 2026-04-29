@@ -207,9 +207,9 @@ public class TableViewPanel extends JPanel {
             dynamicDisplay.add(Box.createVerticalStrut(320));
             dynamicDisplay.add(markTableDirtyButton);
         } else if (order.getOrderStatus().equals("ACTIVE")) {
-            JLabel prepTimeLabel = new JLabel("Prep Time\n" + order.getPrepTime());
+            JLabel prepTimeLabel = new JLabel("Prep Time:           " + order.getPrepTime() + "minutes");
             prepTimeLabel.setForeground(ScreenColors.BLUETEXT);
-            prepTimeLabel.setFont(new Font("Calibri", Font.PLAIN, 24));
+            prepTimeLabel.setFont(new Font("Calibri", Font.PLAIN, 32));
             prepTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             dynamicDisplay.add(Box.createVerticalStrut(20));
             dynamicDisplay.add(prepTimeLabel);

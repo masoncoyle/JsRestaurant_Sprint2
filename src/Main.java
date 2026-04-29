@@ -14,6 +14,9 @@ public class Main {
         Waiter admin = new Waiter(0,"admin","1", "admin", "1", "", 0);
         EmployeeInitializer.employees.add(admin);
 
+        Order testOrder = new Order("1A", 15, "ACTIVE", 32.00);
+        OrderData.orderQueue.add(testOrder);
+
         JFrame screen = new JFrame("Restaurant Manager");
         screen.setSize(1280, 800);
         screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
