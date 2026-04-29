@@ -125,7 +125,6 @@ public class OrderData {
         System.out.println("Table: " + order.getTable().getTableID());
         System.out.println("Items: " +order.getTotalItems());
         System.out.println("Total: $" + String.format("%.2f", order.getOrderTotal()));
-        System.out.println("Estimated Time:" + order.calculatePrepTime() + "minutes");
 
         displayOrderQueue();
     }
