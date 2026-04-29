@@ -1,3 +1,10 @@
+Temporary Admin Login
+
+Username: admin
+
+Password: 1
+
+
 Employee Login Info
 
 Name: Sarah Jackson, Username: sjackson1, Password: 4r34e, Section 1
