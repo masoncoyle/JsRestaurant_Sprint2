@@ -11,11 +11,13 @@ public class TableViewPanel extends JPanel {
     private RoundedRectangle dynamicDisplay = new RoundedRectangle(250,300,20);
     private CardLayout cardLayout;
     private JPanel mainPanel;
+    private OrderPanel orderPanel;
 
-    TableViewPanel(CardLayout cardLayout, JPanel mainPanel){
+    TableViewPanel(CardLayout cardLayout, JPanel mainPanel, OrderPanel orderPanel){
         tableGridPanel = new TableGridPanel(this);
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
+        this.orderPanel = orderPanel;
 
         Employee currentUser = EmployeeInitializer.currentUser;
 
@@ -181,7 +183,7 @@ public class TableViewPanel extends JPanel {
             takeOrderButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // Need to send tableID to Order Screen
+                    orderPanel.setCurrentTableAndOrder(table, order);
                     cardLayout.show(mainPanel, "ORDER");
                 }
             });
@@ -237,7 +239,7 @@ public class TableViewPanel extends JPanel {
             takeOrderButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // Need to send tableID to Order Screen
+                    orderPanel.setCurrentTableAndOrder(table, order);
                     cardLayout.show(mainPanel, "ORDER");
                 }
             });

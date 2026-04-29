@@ -14,6 +14,7 @@ public class Main {
         Waiter admin = new Waiter(0,"admin","1", "admin", "1", "", 0);
         EmployeeInitializer.employees.add(admin);
 
+
         //Order testOrder = new Order("1A", 15, "ACTIVE", 32.00);
         //OrderData.orderQueue.add(testOrder);
 
@@ -25,8 +26,8 @@ public class Main {
         screen.add(mainPanel);
         mainPanel.setBackground(ScreenColors.LIGHTBLUE);
         LoginPanel loginPanel = new LoginPanel(cardLayout, mainPanel);
-        TableViewPanel tableViewPanel = new TableViewPanel(cardLayout, mainPanel);
         OrderPanel orderPanel = new OrderPanel(cardLayout, mainPanel);
+        TableViewPanel tableViewPanel = new TableViewPanel(cardLayout, mainPanel, orderPanel);
         mainPanel.add(loginPanel, "LOGIN");
         mainPanel.add(tableViewPanel, "TABLE_VIEW");
         mainPanel.add(orderPanel, "ORDER");
