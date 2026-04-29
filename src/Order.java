@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Order {
     private int orderID;
-    private LocalDateTime orderTime;
+    private int prepTime;
     private String orderStatus;
     private double orderTotal;
     private Table table;
@@ -14,8 +14,8 @@ public class Order {
     public Order(int orderID, Table table){
         this.orderID = orderID;
         this.table = table;
-        this.orderTime = LocalDateTime.now();
-        this.orderStatus = "OPEN";
+        this.prepTime = 0;
+        this.orderStatus = "ACTIVE";
         this.orderTotal = 0.0;
         this.orderItems = new ArrayList<>();
     }
@@ -23,7 +23,7 @@ public class Order {
     public Order(int orderID, Table table, String orderStatus){
         this.orderID = orderID;
         this.table = table;
-        this.orderTime = LocalDateTime.now();
+        this.prepTime = 0;
         this.orderStatus = orderStatus;
         this.orderTotal = 0.0;
         this.orderItems = new ArrayList<>();
@@ -88,6 +88,14 @@ public class Order {
         return prepTime;
     }
 
+    public int getPrepTime(){
+        return this.prepTime;
+    }
+
+    public  void setPrepTime(int prepTime){
+        this.prepTime = prepTime;
+    }
+
     public int getTotalItems(){
         int totalItems = 0;
 
@@ -107,9 +115,6 @@ public class Order {
         return orderID;
     }
 
-    public LocalDateTime getOrderTime(){
-        return orderTime;
-    }
 
     public String getOrderStatus(){
         return orderStatus;
