@@ -29,7 +29,5 @@ public class TableData {
             new Table("4F", 3, "CLEAN"),
             new Table("5F", 3, "OCCUPIED"),
             new Table("6F", 3, "DIRTY"),
-
-
     };
 }
